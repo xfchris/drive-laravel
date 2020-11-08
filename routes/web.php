@@ -14,10 +14,10 @@ Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
 
 Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider')
-    ->name('niIdeaPaQueEsto');
+    ->name('social');
 
 Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback')
-    ->name('niIdeaPaQueLoOtro');
+    ->name('social');
 
 
 Route::get('/', function () {

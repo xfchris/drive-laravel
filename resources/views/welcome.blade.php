@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
         <title>Laravel</title>
 
         <!-- Fonts -->
@@ -82,6 +83,10 @@
             <div class="content">
                 <div class="title m-b-md">
                     PruebaUP!
+
+                    @if(!Auth::check())
+                        loegueado
+                    @endif
                 </div>
 
                 <div class="links">

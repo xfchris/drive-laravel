@@ -43,11 +43,11 @@ class SocialAuthController extends Controller
             $urlAntes=session('urlAntes');
 
             $this->findOrCreateUser($proveedor, $user);
-            redirect($urlAntes);
+            return redirect($urlAntes);
 
         }catch(\Exception $ex){
             error_log('Error_social: '.$ex->getMessage());
-            redirect($urlAntes)->with('error', 'Se presento un error interno, contacte al administrador');
+            return redirect($urlAntes)->with('error', 'Se presento un error interno, contacte al administrador');
         }
     }
 
