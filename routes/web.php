@@ -27,5 +27,5 @@ Route::get('/', function () {
 
 Route::get('salir', function () {
     Auth::logout();
-    return redirect()->back();
+    return redirect('/');
 });
