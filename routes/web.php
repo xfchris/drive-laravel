@@ -12,20 +12,15 @@
 */
 Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
+Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider');
 
-Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider')
-    ->name('social');
-
-Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback')
-    ->name('social');
-
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
+Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback');
 
 Route::get('salir', function () {
     Auth::logout();
     return redirect('/');
 });
+
+
+Route::get('/', 'Controller@getIndex')->middleware('guest')->name('login');
+Route::get('/dashboard', 'Controller@getDashboard')->middleware('auth');
