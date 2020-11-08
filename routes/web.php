@@ -10,7 +10,22 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/redirect', 'SocialAuthController@redirect');
+Route::get('/callback', 'SocialAuthController@callback');
+
+Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider')
+    ->name('niIdeaPaQueEsto');
+
+Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback')
+    ->name('niIdeaPaQueLoOtro');
+
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('salir', function () {
+    Auth::logout();
+    return redirect()->back();
 });
