@@ -81,6 +81,7 @@ class SocialAuthController extends Controller
                 $authUser = User::create([
                     'name' => $callUser->name,
                     'email' => ($callUser->email)?$callUser->email:time().'@ramdon_'.$proveedor.'.com',
+                    'password' => generateRandomString(30),
                     'avatar' => $callUser->avatar,
                     'socials_id' => $proveedor.'::'.$callUser->id."\n"
                 ]);

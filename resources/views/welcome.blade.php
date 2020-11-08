@@ -84,8 +84,8 @@
                 <div class="title m-b-md">
                     PruebaUP!
 
-                    @if(!Auth::check())
-                        loegueado
+                    @if(Auth::check())
+                        logueado
                     @endif
                 </div>
 
