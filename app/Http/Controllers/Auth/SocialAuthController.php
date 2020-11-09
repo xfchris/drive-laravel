@@ -13,12 +13,6 @@ use Illuminate\Support\Facades\Auth;
 class SocialAuthController extends Controller
 {
 
-
-    public function principal(){
-        return "este controlador es todo lo relacionado con login y registro SOCIAL!";
-    }
-
-
     /**
      * redirectToProvider redirecciona la peticion al proveedor, (google)
      * @param $provedor
@@ -90,5 +84,10 @@ class SocialAuthController extends Controller
             return true;
         }
         return false;
+    }
+
+    function logout() {
+        Auth::logout();
+        return redirect('/');
     }
 }
