@@ -123,3 +123,11 @@ table.table-hover tbody tr:hover {
 .d-none-ni{
     display: none;
 }
+
+.bg-marron {
+    background-color: #4a0303!important;
+}
+
+.text-bold{
+    font-weight: bold;
+}
