@@ -4,7 +4,7 @@ Route::get('/redirect', 'SocialAuthController@redirect');
 Route::get('/callback', 'SocialAuthController@callback');
 Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider');
 Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback');
-Route::get('/salir', 'SocialAuthController@logout');
+Route::get('/salir', 'Auth\SocialAuthController@logout');
 
 //Panel de archivos
 Route::get('/', 'Controller@getIndex')->middleware('guest')->name('login');
