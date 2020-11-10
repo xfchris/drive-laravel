@@ -8,13 +8,15 @@ feather.replace()
 
 actualizarTablaArchivos()
 subirArchivo()
+
+//Evento global para descargar archivo
 addEvent(document, 'click', '.btnDescargar', function(e) {
     let key = dataArchivos[this.dataset.row]
     location.href='/dashboard/descargar/'+key
 });
 
 
-//se añade evento global para botones de eliminar
+//Evento global para botones de eliminar
 addEvent(document, 'click', '.btnEliminarArchivo', function(e) {
     let key = this.dataset.row
 
