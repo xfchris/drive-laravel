@@ -1,16 +1,19 @@
 <?php
+//Rutas de sesion con oauth
+Route::get('/redirect', 'SocialAuthController@redirect');
+Route::get('/callback', 'SocialAuthController@callback');
+Route::get('auth/{provider}', 'Auth\SocialAuthController@redirectToProvider');
+Route::get('auth/{provider}/callback', 'Auth\SocialAuthController@handleProviderCallback');
+Route::get('/salir', 'Auth\SocialAuthController@logout');
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+//Panel de archivos
+Route::get('/', 'Controller@getIndex')->middleware('guest')->name('login');
+Route::get('/dashboard', 'Controller@getDashboard')->middleware('auth');
+Route::get('/dashboard/json', 'Controller@getFilesJson')->middleware('auth');
+Route::post('/dashboard/upload', 'Controller@postUploadFiles')->middleware('auth');
+Route::post('/dashboard/eliminar', 'Controller@postEliminarArchivo')->middleware('auth');
+Route::get('/dashboard/descargar/{id}', 'Controller@getDescargarArchivo')->middleware('auth');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+//Cuenta de usuario y planes
+Route::get('/cuenta', 'UserController@getIndex')->middleware('auth');
