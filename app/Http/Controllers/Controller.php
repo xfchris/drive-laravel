@@ -113,6 +113,11 @@ class Controller extends BaseController
         return response()->json($out, $code);
     }
 
+    /**
+     * Eliminar un archivo seleccionado
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postEliminarArchivo(Request $request){
         $id = $request->id;
         $archivo = Auth::user()->archivos()->find($id);
