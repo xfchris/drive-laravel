@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Archivo;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class Controller extends BaseController
 {
@@ -31,58 +32,65 @@ class Controller extends BaseController
     }
 
     public function getFilesJson(){
-        return '[
-            {
-                "Name": "Unity Pugh",
-                "Ext.": "9958",
-                "City": "Curicó",
-                "Start Date": "2005/02/11",
-                "Completion": "37%"
-            },
-            {
-                "Name": "Theodore Duran",
-                "Ext.": "8971",
-                "City": "Dhanbad",
-                "Start Date": "1999/04/07",
-                "Completion": "97%"
-            },
-            {
-                "Name": "Theodore Duran",
-                "Ext.": "8971",
-                "City": "Dhanbad",
-                "Start Date": "1999/04/07",
-                "Completion": "97%"
-            },
-            {
-                "Name": "Theodore Duran",
-                "Ext.": "8971",
-                "City": "Dhanbad",
-                "Start Date": "1999/04/07",
-                "Completion": "97%"
+        $archivos = Auth::user()->archivos()->select('id','nombre','tipo','fechasubida','tamano')
+            ->orderBy('fechasubida', 'DESC')->get();
+
+        $out = [];
+        if ($archivos){
+
+            $total = count($archivos);
+
+            for ($i=$total; $i!=0; $i--){
+                $archivo = $archivos[$total-$i];
+                $out[] = [
+                    '#'=>"$i",
+                    'Nombre'=>$archivo->nombre,
+                    'Tipo'=>$archivo->tipo,
+                    'Subido el'=>$archivo->getFechaSubida(),
+                    'Tamaño'=>humanFilesize($archivo->tamano, 1),
+                    'ops'=>"$archivo->id"
+                ];
             }
-        ]';
+        }
+
+        return $out;
     }
 
-    //Sube los archivos, y muestra y devuelve respuesta en json
+    /**
+     * Sube los archivos, y muestra y devuelve respuesta en json
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function postUploadFiles(Request $request){
         //Obtengo archivos
-        die();
         $archivos = $request->file('files');
         $code = 200;
         $user = Auth::user();
+
         try{
             foreach($archivos as $archivo)
             {
                 $nombre = $archivo->getClientOriginalName();
 
                 //Se busca nombre en base de datos por el usuario
+                $sqlFile = Archivo::where('nombre', $nombre)->first();
+
                 //Si no existe, creo el archivo en base de datos
-                //creo el archivo en el servidor
-                //Si aparece, copio
+                if (!$sqlFile){
+                    $sqlFile = Archivo::create(['nombre'=>$nombre,
+                        'tipo'=>$archivo->getClientOriginalExtension(),
+                        'fechasubida'=>time(),
+                        'tamano'=>$archivo->getSize(),
+                        'user_id'=>$user->id]);
+                }else{
+                    //Si existe solo actualizo fecha de subida y el tamaño.
+                    $sqlFile->fechasubida = time();
+                    $sqlFile->tamano = $archivo->getSize();
+                    $sqlFile->save();
+                }
 
-                $nombre = $user->id. '_'.$idSql.'_'.$archivo->getClientOriginalExtension();
-
-                $archivo->move(public_path('images'), $nombre);
+                //Guardo el archivo en el servidor
+                $archivo->move(storage_path('public'), $sqlFile->getNombreServer());
                 //Se va añadiendo por base de datos el archivo subido
                 $out = [
                     'code'=>'success',
@@ -90,6 +98,9 @@ class Controller extends BaseController
                 ];
             }
         }catch (\Exception $e){
+            //Falta controlar error cuando suceda un error y aya creado el archivo en la base de datos.
+
+            //Error de subida
             error_log('Error_subida: '.$e->getMessage());
             $out = [
                 'code'=>'error',
@@ -100,5 +111,32 @@ class Controller extends BaseController
 
         //Subo cada uno de los archivos a su respectivo directorio
         return response()->json($out, $code);
+    }
+
+    public function postEliminarArchivo(Request $request){
+        $id = $request->id;
+        $archivo = Auth::user()->archivos()->find($id);
+
+        //elimino el archivo del servidor
+        if (unlink(storage_path('public').'/'.$archivo->getNombreServer())){
+            $res = response()->json([
+                'code'=>'success',
+                "msg"=>'Archivo eliminado exitosamente'
+            ]);
+            //elimino el archivo en SQL
+            $archivo->delete();
+        }else{
+            error_log("Error: No se pudo eliminar el archivo");
+            $res = response()->json([
+                'code'=>'error',
+                "msg"=>'No se pudo eliminar el archivo'
+            ],500);
+        }
+        return $res;
+    }
+
+    //Elimina los archivos automaticamente mediante una tarea programada
+    public function getEliminarAuto(){
+
     }
 }

@@ -131,3 +131,7 @@ table.table-hover tbody tr:hover {
 .text-bold{
     font-weight: bold;
 }
+
+#listaDeArchivos thead tr th:last-child{
+    width: 1px !important;
+}
