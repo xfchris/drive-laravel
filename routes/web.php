@@ -10,7 +10,7 @@ Route::get('/salir', 'Auth\SocialAuthController@logout');
 Route::get('/', 'Controller@getIndex')->middleware('guest')->name('login');
 Route::get('/dashboard', 'Controller@getDashboard')->middleware('auth');
 Route::get('/dashboard/json', 'Controller@getFilesJson');
-Route::get('/dashboard/upload', 'Controller@postUploadFiles');
+Route::post('/dashboard/upload', 'Controller@postUploadFiles');
 
 //Cuenta de usuario y planes
 Route::get('/cuenta', 'UserController@getIndex')->middleware('auth');
