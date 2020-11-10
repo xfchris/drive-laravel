@@ -8,6 +8,10 @@ feather.replace()
 
 actualizarTablaArchivos()
 subirArchivo()
+addEvent(document, 'click', '.btnDescargar', function(e) {
+    let key = dataArchivos[this.dataset.row]
+    location.href='/dashboard/descargar/'+key
+});
 
 
 //se añade evento global para botones de eliminar
@@ -53,7 +57,6 @@ function actualizarTablaArchivos() {
                 // Sort the second column in ascending order
                 { select: 0, sort: "desc" },
 
-
                 // Append a button to the seventh column
                 {
                     select: 5,
@@ -61,10 +64,16 @@ function actualizarTablaArchivos() {
                         if (!isNaN(Number(data))){
                             dataArchivos[row.dataIndex] = data
                         }
-                        return "<button class='btnEliminarArchivo btn btn-sm btn-outline-danger' " +
-                                    "type='button' data-row='"  + row.dataIndex + "'>" +
-                                    "Eliminar"+
-                                "</button>";
+                        return "<div class='d-flex'>" +
+                            "<button class='btnDescargar btn btn-sm btn-outline-success' " +
+                            "type='button' data-row='"  + row.dataIndex + "'>" +
+                            'Descargar'+
+                            "</button>" +
+                            "<button class='btnEliminarArchivo btn btn-sm btn-outline-danger' " +
+                            "type='button' data-row='"  + row.dataIndex + "'>" +
+                            '<b>X</b>'+
+                            "</button>" +
+                            "</div>";
                     }
                 }
             ],

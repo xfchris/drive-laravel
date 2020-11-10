@@ -48,7 +48,7 @@ class Controller extends BaseController
                     'Tipo'=>$archivo->tipo,
                     'Subido el'=>$archivo->getFechaSubida(),
                     'Tamaño'=>humanFilesize($archivo->tamano, 1),
-                    'ops'=>"$archivo->id"
+                    'Opciones'=>"$archivo->id"
                 ];
             }
         }
@@ -143,5 +143,19 @@ class Controller extends BaseController
     //Elimina los archivos automaticamente mediante una tarea programada
     public function getEliminarAuto(){
 
+    }
+
+    /**
+     * Metodo para descargar un archivo
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     */
+    public function getDescargarArchivo($id){
+        $archivo = Auth::user()->archivos()->find($id);
+        if ($archivo){
+            return response()->download(storage_path('public').'/'.$archivo->getNombreServer(),
+                $archivo->nombre);
+        }else{
+            return redirect('/');
+        }
     }
 }
