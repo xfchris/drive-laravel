@@ -28,7 +28,8 @@ class Controller extends BaseController
      * @return string
      */
     public function getDashboard(){
-        return view('dashboard.index');
+        $user = Auth::user();
+        return view('dashboard.index', compact('user'));
     }
 
     public function getFilesJson(){
@@ -68,6 +69,11 @@ class Controller extends BaseController
         $user = Auth::user();
 
         try{
+            //compruebo que tenga plan vigente
+            if (!$user->getUltimoPlanVigente()){
+                throw new \Exception('Antes de subir un archivo, primero actualiza tu plan', 400);
+            }
+            //compruebo que el archivo no supere x mbs
             foreach($archivos as $archivo)
             {
                 $nombre = $archivo->getClientOriginalName();
@@ -93,20 +99,25 @@ class Controller extends BaseController
                 $archivo->move(storage_path('public'), $sqlFile->getNombreServer());
                 //Se va añadiendo por base de datos el archivo subido
                 $out = [
-                    'code'=>'success',
+                    'status'=>'success',
                     'msg'=>'Archivos subidos'
                 ];
             }
         }catch (\Exception $e){
             //Falta controlar error cuando suceda un error y aya creado el archivo en la base de datos.
 
-            //Error de subida
-            error_log('Error_subida: '.$e->getMessage());
+            if ($e->getCode()==400){
+                $code=400;
+                $msg = $e->getMessage();
+            }else{
+                $code = 500;
+                $msg = 'Se presentó un error interno, consulte al administrador';
+                error_log('Error_subida: '.$e->getMessage());
+            }
             $out = [
-                'code'=>'error',
-                'msg'=>'Se presentó un error interno, consulte al administrador'
+                'status'=>'error',
+                'msg'=>$msg
             ];
-            $code = 500;
         }
 
         //Subo cada uno de los archivos a su respectivo directorio
@@ -125,7 +136,7 @@ class Controller extends BaseController
         //elimino el archivo del servidor
         if (unlink(storage_path('public').'/'.$archivo->getNombreServer())){
             $res = response()->json([
-                'code'=>'success',
+                'status'=>'success',
                 "msg"=>'Archivo eliminado exitosamente'
             ]);
             //elimino el archivo en SQL
@@ -133,7 +144,7 @@ class Controller extends BaseController
         }else{
             error_log("Error: No se pudo eliminar el archivo");
             $res = response()->json([
-                'code'=>'error',
+                'status'=>'error',
                 "msg"=>'No se pudo eliminar el archivo'
             ],500);
         }
