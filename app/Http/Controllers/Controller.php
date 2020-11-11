@@ -3,16 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Archivo;
+use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+
+    /**
+     * Controller constructor.
+     */
+    public function __construct()
+    {
+        $this->eliminarArchivosVencidos();
+    }
 
     /**
      * Pagina principal y landing page
@@ -32,6 +43,10 @@ class Controller extends BaseController
         return view('dashboard.index', compact('user'));
     }
 
+    /**
+     * Obtiene la lista de archivos en formato json
+     * @return array
+     */
     public function getFilesJson(){
         $archivos = Auth::user()->archivos()->select('id','nombre','tipo','fechasubida','tamano')
             ->orderBy('fechasubida', 'DESC')->get();
@@ -151,9 +166,39 @@ class Controller extends BaseController
         return $res;
     }
 
-    //Elimina los archivos automaticamente mediante una tarea programada
-    public function getEliminarAuto(){
 
+    /**
+     * Funcion que elimina archivos vencidos
+     */
+    private function eliminarArchivosVencidos(){
+        //1. Obtengo todos los archivos de los usuarios vencidos
+        $archivos = Archivo::whereIn('user_id', function ($query){
+
+            //selecciono usuarios que no esten en tabla de planes comprados (user_plan)
+            $query->select('id')->from('users')->whereNotIn('id', function($query){
+                //selecciono planes comprados por usuarios activos
+                $query->select('user_id')->from('user_plan')->where('estado',1)->where('fechafin','>', time());
+            });
+        })->get();
+
+        //3. Elimino archivos vencidos del sistema
+        $idEliminados = [];
+        foreach ($archivos as $archivo) {
+            $ruta = storage_path('public').'/'.$archivo->getNombreServer();
+            if(file_exists($ruta)){
+                if(unlink($ruta)){
+                    $idEliminados[] = $archivo->id;
+                }else{
+                    error_log("warning_eliminar_archivo: no pudo eliminar el archivo [".$ruta."]");
+                }
+            }
+        }
+        //4. Elimino SQL de archivos vencidos por usuario
+        if (count($idEliminados)){
+            if (!Archivo::whereIn('id', $idEliminados)->delete()){
+                error_log("warning_eliminar_archivos_sql: no pudo eliminar los archivos ".json_encode($idEliminados)." de la base de datos");
+            }
+        }
     }
 
     /**
