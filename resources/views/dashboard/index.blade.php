@@ -22,7 +22,7 @@
     </div>
 
     <div id="progressFiles" class="progress d-none-ni">
-        <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">Subiendo en 25%</div>
+        <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">Subiendo en 0%</div>
     </div>
 
     <div class=" mb-3 border-bottom">

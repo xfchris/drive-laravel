@@ -33,14 +33,14 @@
                 <div class="position-sticky pt-3">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="/dashboard">
+                            <a class="nav-link" href="/dashboard">
                                 <span data-feather="file"></span>
                                 Archivos
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/cuenta">
-                                <span data-feather="shopping-cart"></span>
+                                <span data-feather="user"></span>
                                 Mi cuenta
                             </a>
                         </li>
@@ -50,17 +50,18 @@
 
                     <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
                         <span>Mi plan</span>
-
-                        <!--
-                        <a class="link-secondary" href="#" aria-label="Add a new report">
-                            <span data-feather="plus-circle"></span>
-                        </a>-->
                     </h6>
-                    <p class="mb-2 px-3">Actualmente tienes
-                        <br/><b class="text-bold tiempoPlan">{{$user->getTiempoPlan()}}</b> de tiempo de permanencia de archivos.
+
+
+                    <p class="mb-2 px-3">
+                        @if($user->getTiempoPlan())
+                        Tus archivos estarán hasta el
+                        <br/><b class="text-bold tiempoPlan">{{$user->getTiempoPlan()}}</b>.
                         <br/>
+                        @endif
                         Para evitar que se borren tus archivos automáticamente, añádele mas tiempo a tu plan de almacenamiento.
                     </p>
+
 
                     <a class="btn btn-sm btn-outline-primary mx-3"
                        href="{{asset('/cuenta/planes')}}"

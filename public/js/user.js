@@ -56,6 +56,8 @@ function actualizarTextosPlan(txt){
     document.querySelectorAll('.tiempoPlan').forEach(function(i){
         i.innerText = txt
     })
+    let txtPV = document.querySelector('.txtPlanVigente')
+    txtPV && (txtPV.style.display = 'none')
 }
 
 

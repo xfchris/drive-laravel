@@ -135,3 +135,7 @@ table.table-hover tbody tr:hover {
 #listaDeArchivos thead tr th:last-child{
     width: 1px !important;
 }
+
+.btn-xs{
+    padding: 1px 6px !important;
+}

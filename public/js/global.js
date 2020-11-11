@@ -67,11 +67,11 @@ function actualizarTablaArchivos() {
                             dataArchivos[row.dataIndex] = data
                         }
                         return "<div class='d-flex'>" +
-                            "<button class='btnDescargar btn btn-sm btn-outline-success' " +
+                            "<button class='btnDescargar btn btn-xs btn-outline-success' " +
                             "type='button' data-row='"  + row.dataIndex + "'>" +
                             'Descargar'+
                             "</button>" +
-                            "<button class='btnEliminarArchivo btn btn-sm btn-outline-danger' " +
+                            "<button class='btnEliminarArchivo btn btn-xs btn-outline-danger' " +
                             "type='button' data-row='"  + row.dataIndex + "'>" +
                             '<b>X</b>'+
                             "</button>" +
@@ -79,7 +79,7 @@ function actualizarTablaArchivos() {
                     }
                 }
             ],
-            perPage: 5,
+            perPage: 8,
             //searchable: false,
             //fixedHeight: true
             ajax: {
@@ -134,7 +134,8 @@ function subirArchivo() {
                             return Swal.fire(res.data.msg, '', 'success')
                         },
                         function (err) {
-                            return Swal.fire("Error de servidor, consulte al administrador", '', 'error')
+                            msg = err.response.data.msg
+                            return Swal.fire(msg || 'La suma de los archivos exceden el limite de peso permitido', '', 'error')
                         })
                 } else {
                     iFiles.files.length = 0

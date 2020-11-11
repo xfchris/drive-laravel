@@ -69,6 +69,11 @@ class Controller extends BaseController
         $user = Auth::user();
 
         try{
+            //compruebo que tenga plan vigente
+            if (!$user->getUltimoPlanVigente()){
+                throw new \Exception('Antes de subir un archivo, primero actualiza tu plan', 400);
+            }
+            //compruebo que el archivo no supere x mbs
             foreach($archivos as $archivo)
             {
                 $nombre = $archivo->getClientOriginalName();
@@ -101,13 +106,18 @@ class Controller extends BaseController
         }catch (\Exception $e){
             //Falta controlar error cuando suceda un error y aya creado el archivo en la base de datos.
 
-            //Error de subida
-            error_log('Error_subida: '.$e->getMessage());
+            if ($e->getCode()==400){
+                $code=400;
+                $msg = $e->getMessage();
+            }else{
+                $code = 500;
+                $msg = 'Se presentó un error interno, consulte al administrador';
+                error_log('Error_subida: '.$e->getMessage());
+            }
             $out = [
                 'status'=>'error',
-                'msg'=>'Se presentó un error interno, consulte al administrador'
+                'msg'=>$msg
             ];
-            $code = 500;
         }
 
         //Subo cada uno de los archivos a su respectivo directorio
