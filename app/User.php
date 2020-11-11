@@ -33,8 +33,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //Devuelve los archivos
+    /**
+     * Devuelve los archivos del usuario
+     */
     public function archivos(){
         return $this->hasMany('App\Archivo');
+    }
+
+    /**
+     * Funcion que te dice, cuanto tiempo le queda a tu plan en formato entendible
+     * @return string
+     */
+    public function getTiempoPlan(){
+        return '4 semanas';
+    }
+
+    /**
+     * Funcion que aumenta el plan de almacenamiento para el usuario
+     * @param $planId
+     * @return bool
+     */
+    public function aumentarPlan($planId){
+        return true;
     }
 }

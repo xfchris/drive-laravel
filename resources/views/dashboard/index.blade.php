@@ -11,7 +11,7 @@
                 <input class="d-none" multiple type="file" id="iSubirArchivo"  name="iSubirArchivo" />
 
             <div class="btn-group mr-2">
-                <button type="button" class="btn btn-sm btn-outline-primary" id="btnSubirArchivo">
+                <button type="button" class="btn btn-sm btn-primary" id="btnSubirArchivo">
                     <span data-feather="upload-cloud"></span>
                     Subir archivo</button>
             </div>

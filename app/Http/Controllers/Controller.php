@@ -28,7 +28,8 @@ class Controller extends BaseController
      * @return string
      */
     public function getDashboard(){
-        return view('dashboard.index');
+        $user = Auth::user();
+        return view('dashboard.index', compact('user'));
     }
 
     public function getFilesJson(){
@@ -93,7 +94,7 @@ class Controller extends BaseController
                 $archivo->move(storage_path('public'), $sqlFile->getNombreServer());
                 //Se va añadiendo por base de datos el archivo subido
                 $out = [
-                    'code'=>'success',
+                    'status'=>'success',
                     'msg'=>'Archivos subidos'
                 ];
             }
@@ -103,7 +104,7 @@ class Controller extends BaseController
             //Error de subida
             error_log('Error_subida: '.$e->getMessage());
             $out = [
-                'code'=>'error',
+                'status'=>'error',
                 'msg'=>'Se presentó un error interno, consulte al administrador'
             ];
             $code = 500;
@@ -125,7 +126,7 @@ class Controller extends BaseController
         //elimino el archivo del servidor
         if (unlink(storage_path('public').'/'.$archivo->getNombreServer())){
             $res = response()->json([
-                'code'=>'success',
+                'status'=>'success',
                 "msg"=>'Archivo eliminado exitosamente'
             ]);
             //elimino el archivo en SQL
@@ -133,7 +134,7 @@ class Controller extends BaseController
         }else{
             error_log("Error: No se pudo eliminar el archivo");
             $res = response()->json([
-                'code'=>'error',
+                'status'=>'error',
                 "msg"=>'No se pudo eliminar el archivo'
             ],500);
         }
