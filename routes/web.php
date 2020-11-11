@@ -17,3 +17,4 @@ Route::get('/dashboard/descargar/{id}', 'Controller@getDescargarArchivo')->middl
 
 //Cuenta de usuario y planes
 Route::get('/cuenta', 'UserController@getIndex')->middleware('auth');
+Route::post('/cuenta', 'UserController@postIndex')->middleware('auth');

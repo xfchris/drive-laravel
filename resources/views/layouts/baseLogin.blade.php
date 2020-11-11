@@ -87,6 +87,7 @@
             </nav>
 
             <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <input class="d-none" type="hidden" id="i_token" name="_token" value="{{ csrf_token() }}">
                 @yield("content")
             </main>
         </div>

@@ -8,7 +8,6 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 
         <div class="btn-toolbar mb-2 mb-md-0">
-                <input class="d-none" type="hidden" id="iSubirArchivo_token" name="_token" value="{{ csrf_token() }}">
                 <input class="d-none" multiple type="file" id="iSubirArchivo"  name="iSubirArchivo" />
 
             <div class="btn-group mr-2">

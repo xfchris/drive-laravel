@@ -3,7 +3,7 @@
 
 let datatable = null
 let dataArchivos = []
-let token =  document.querySelector('#iSubirArchivo_token').value
+var token =  document.querySelector('#i_token').value
 feather.replace()
 
 actualizarTablaArchivos()
@@ -103,9 +103,15 @@ function actualizarTablaArchivos() {
 
 //Metodo para subir los archivos
 function subirArchivo() {
-    let iFiles = document.querySelector('#iSubirArchivo');
+    let iFiles = document.querySelector('#iSubirArchivo')
+    let btnSArchivo = document.querySelector('#btnSubirArchivo')
+
+    if (!btnSArchivo){
+       return;
+    }
+
     //vinculo al boton subir archivo, el input file
-    document.querySelector('#btnSubirArchivo').onclick = function () {
+    btnSArchivo.onclick = function () {
         iFiles.click();
     }
 
