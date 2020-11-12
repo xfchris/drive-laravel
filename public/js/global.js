@@ -1,5 +1,5 @@
-/*(function () {
-    'use strict'*/
+(function () {
+    'use strict'
 
 let datatable = null
 let dataArchivos = []
@@ -218,6 +218,6 @@ function addEvent(parent, evt, selector, handler) {
 }
 
 
-//})()
+})()
 
 
