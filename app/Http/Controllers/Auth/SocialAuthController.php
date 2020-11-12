@@ -86,6 +86,10 @@ class SocialAuthController extends Controller
         return false;
     }
 
+    /**
+     * Cerrar sesion
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     function logout() {
         Auth::logout();
         return redirect('/');

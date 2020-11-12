@@ -1,14 +1,14 @@
 @extends('layouts.baseLogin')
 
 @section('title') Dashboard - PruebaUP! @stop
-@section('cssFile') {{asset('css/dashboard.css')}} @stop
-
+@section('cssFile', asset('css/dashboard.css'))
 
 @section('content')
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2">
 
         <div class="btn-toolbar mb-2 mb-md-0">
-                <input class="d-none" multiple type="file" id="iSubirArchivo"  name="iSubirArchivo" />
+                <input class="d-none" multiple type="file" id="iSubirArchivo"  name="iSubirArchivo"
+                data-max="{{$tamanoMax}}"/>
 
             <div class="btn-group mr-2">
                 <button type="button" class="btn btn-sm btn-primary" id="btnSubirArchivo">

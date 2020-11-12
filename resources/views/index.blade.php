@@ -3,9 +3,9 @@
 @section('title') Alacenamiento sin limites - PruebaUP! @stop
 @section('descripcion') Alacenamiento sin limites - PruebaUP! @stop
 @section('keywords') uso compartido de archivos, almacenamiento en la nube, almacenamiento de archivos en línea, aplicaciones, plataforma de aplicaciones, @stop
+@section('cssFile', asset('css/index.css'))
 
-@section('cssFile') {{asset('css/index.css')}} @stop
-@section('bodyCss') d-flex h-100 text-center text-white bg-color-b @stop
+@section('bodyCss', 'd-flex h-100 text-center text-white bg-color-b')
 
 @section('body')
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">

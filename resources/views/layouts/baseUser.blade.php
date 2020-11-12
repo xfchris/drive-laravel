@@ -1,7 +1,7 @@
 @extends('layouts.baseLogin')
 
 @section('title') Mi cuenta - PruebaUP! @stop
-@section('cssFile') {{asset('css/dashboard.css')}} @stop
+@section('cssFile', asset('css/dashboard.css'))
 
 @section('script')
     <script src="{{asset('js/user.js')}}"></script> @stop
