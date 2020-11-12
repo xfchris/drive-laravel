@@ -5,10 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="@yield('descripcion')">
     <meta name="keywords" content="@yield('keywords')">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>@yield('title')</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css"
           integrity="sha384-DhY6onE6f3zzKbjUPRc2hOzGAdEf4/Dz+WJwBvEYL/lkkIsI3ihufq9hk9K4lVoK" crossorigin="anonymous">
+
 
     @yield('head')
     <link rel="stylesheet" href="@yield('cssFile')"/>
