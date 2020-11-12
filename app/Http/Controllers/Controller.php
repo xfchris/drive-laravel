@@ -16,6 +16,7 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public static $tamanoMax = 942026; //tamaño maximo en bytes
 
     /**
      * Controller constructor.
@@ -40,7 +41,8 @@ class Controller extends BaseController
      */
     public function getDashboard(){
         $user = Auth::user();
-        return view('dashboard.index', compact('user'));
+        $tamanoMax = self::$tamanoMax;
+        return view('dashboard.index', compact('user', 'tamanoMax'));
     }
 
     /**
@@ -88,7 +90,14 @@ class Controller extends BaseController
             if (!$user->getUltimoPlanVigente()){
                 throw new \Exception('Antes de subir un archivo, primero actualiza tu plan', 400);
             }
-            //compruebo que el archivo no supere x mbs
+            //compruebo que tenga plan vigente
+            if (self::$tamanoMax < array_reduce($archivos, function ($x, $y){
+                    $x+=$y->getSize();
+                    return $x;
+                })){
+                throw new \Exception('El archivo excede el tamaño máximo de '.humanFilesize(self::$tamanoMax), 400);
+            }
+
             foreach($archivos as $archivo)
             {
                 $nombre = $archivo->getClientOriginalName();
