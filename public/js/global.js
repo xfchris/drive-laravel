@@ -114,7 +114,7 @@ function subirArchivo() {
     btnSArchivo.onclick = function () {
         iFiles.click();
     }
-    tamanoMax = iFiles.getAttribute('data-max');
+    let tamanoMax = iFiles.getAttribute('data-max');
 
     //cuando se suba los archivos al input file, manda archivos al servidor
     iFiles.onchange = function () {
@@ -140,7 +140,7 @@ function subirArchivo() {
                                 return Swal.fire(res.data.msg, '', 'success')
                             },
                             function (err) {
-                                msg = err.response.data.msg
+                                let msg = err.response.data.msg
                                 return Swal.fire(msg || 'La suma de los archivos exceden el limite de peso permitido', '', 'error')
                             })
                     } else {
@@ -157,7 +157,7 @@ function subirArchivo() {
 function validacionesArchivos(iFiles, tamanoMax){
     //valido tamaño de archivos
     let size = 0
-    for(i=0; i<iFiles.length; i++){
+    for(let i=0; i<iFiles.length; i++){
         size += iFiles[i].size;
     }
     if (size > tamanoMax ){

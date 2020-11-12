@@ -32,8 +32,7 @@ class SocialAuthController extends Controller
     public function handleProviderCallback($proveedor)
     {
         $urlAntes="/";
-        try{
-            $user = Socialite::driver($proveedor)->user();
+        try{$user = Socialite::driver($proveedor)->user();
             $urlAntes=session('urlAntes');
 
             $this->findOrCreateUser($proveedor, $user);
